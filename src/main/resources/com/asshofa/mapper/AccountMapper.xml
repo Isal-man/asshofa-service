@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asshofa.mapper.AccountMapper">
+    <select id="getAccount" resultType="com.asshofa.model.pojo.AccountPojo">
+        select username, email, password, full_name, image, created_at from account where username = #{username}
+    </select>
+
+    <select id="getUsername" resultType="com.asshofa.model.pojo.AccountPojo">
+        select username, email, password, full_name, image, created_at from account where username = #{username}
+    </select>
+
+    <insert id="createAccount" parameterType="com.asshofa.model.pojo.AccountPojo">
+        insert into account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null or username != ''">username,</if>
+            <if test="email != null or email != ''">email,</if>
+            <if test="password != null or password != ''">password,</if>
+            <if test="fullName != null or fullName != ''">full_name,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="image != null or image != ''">image,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null or username != ''">#{username},</if>
+            <if test="email != null or email != ''">#{email},</if>
+            <if test="password != null or password != ''">#{password},</if>
+            <if test="fullName != null or fullName != ''">#{fullName},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="image != null or image != ''">#{image},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAccount" parameterType="com.asshofa.model.pojo.AccountPojo">
+        update account set
+        <trim suffixOverrides=",">
+            <if test="email != null or email != ''">email = #{email},</if>
+            <if test="password != null or password != ''">password = #{password},</if>
+            <if test="fullName != null or fullName != ''">full_name = #{fullName},</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="image != null or image != ''">image = #{image},</if>
+        </trim>
+        where username = #{username}
+    </update>
+
+    <delete id="deleteAccount">
+        delete from account
+        where username = #{username}
+    </delete>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asshofa.mapper.SantriMapper">
+    <select id="getDataSantri" resultType="com.asshofa.model.pojo.SantriPojo">
+        select id, nama, tanggal_lahir, alamat, created_at, updated_at, id_wali from santri
+        where 1=1
+        <if test="nama != null and nama != ''">
+            <bind name="nama" value="'%' + nama + '%'"/>
+            and lower(nama) like lower(#{nama})
+        </if>
+        <if test="bulan != null and bulan != ''">
+            <bind name="bulan" value="'%' + bulan + '%'"/>
+            and lower(to_char(tanggal_lahir::date, 'Month')) like lower(#{bulan})
+        </if>
+        <if test="tahun != null and tahun != ''">
+            <bind name="tahun" value="'%' + tahun + '%'"/>
+            and lower(to_char(tanggal_lahir::date, 'YYYY')) like lower(#{tahun})
+        </if>
+        <if test="alamat != null and alamat != ''">
+            <bind name="alamat" value="'%' + alamat + '%'"/>
+            and lower(alamat) like lower(#{alamat})
+        </if>
+        offset #{page} limit #{limit}
+    </select>
+
+    <select id="countSantri" resultType="Integer">
+        select count(*) from santri
+        where 1=1
+        <if test="nama != null and nama != ''">
+            <bind name="nama" value="'%' + nama + '%'"/>
+            and lower(nama) like lower(#{nama})
+        </if>
+        <if test="bulan != null and bulan != ''">
+            <bind name="bulan" value="'%' + bulan + '%'"/>
+            and lower(to_char(tanggal_lahir::date, 'Month')) like lower(#{bulan})
+        </if>
+        <if test="tahun != null and tahun != ''">
+            <bind name="tahun" value="'%' + tahun + '%'"/>
+            and lower(to_char(tanggal_lahir::date, 'YYYY')) like lower(#{tahun})
+        </if>
+        <if test="alamat != null and alamat != ''">
+            <bind name="alamat" value="'%' + alamat + '%'"/>
+            and lower(alamat) like lower(#{alamat})
+        </if>
+    </select>
+
+    <select id="getSantriById" resultType="com.asshofa.model.pojo.SantriPojo">
+        select id, nama, tanggal_lahir, alamat, created_at, updated_at, id_wali
+        from santri
+        where id = #{id}::uuid
+    </select>
+
+    <insert id="create" parameterType="com.asshofa.model.pojo.SantriPojo">
+        insert into santri
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">id,</if>
+            <if test="nama != null or nama != ''">nama,</if>
+            <if test="tanggalLahir != null or tanggalLahir != ''">tanggal_lahir,</if>
+            <if test="alamat != null or alamat != ''">alamat,</if>
+            <if test="idWali != null or idWali != ''">id_wali,</if>
+            <if test="createdAt != null">created_at,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">#{id}::uuid,</if>
+            <if test="nama != null or nama != ''">#{nama},</if>
+            <if test="tanggalLahir != null or tanggalLahir != ''">#{tanggalLahir},</if>
+            <if test="alamat != null or alamat != ''">#{alamat},</if>
+            <if test="idWali != null or idWali != ''">#{idWali}::uuid,</if>
+            <if test="createdAt != null">#{createdAt},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.asshofa.model.pojo.SantriPojo">
+        update santri set
+        <trim suffixOverrides=",">
+            <if test="nama != null or nama != ''">nama = #{nama},</if>
+            <if test="tanggalLahir != null or tanggalLahir != ''">tanggal_lahir = #{tanggalLahir},</if>
+            <if test="alamat != null or alamat != ''">alamat = #{alamat},</if>
+            <if test="idWali != null or idWali != ''">id_wali = #{idWali}::uuid,</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}::uuid
+    </update>
+
+    <delete id="delete">
+        delete
+        from santri
+        where id = #{id}::uuid
+    </delete>
+</mapper>
