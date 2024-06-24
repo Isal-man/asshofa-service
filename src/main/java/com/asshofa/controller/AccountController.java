@@ -13,6 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/account")
+@CrossOrigin(origins = "*")
 @Tag(name = "Account Service", description = "API Collections for Account")
 public class AccountController {
 

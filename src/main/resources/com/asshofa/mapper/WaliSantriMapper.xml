@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asshofa.mapper.WaliSantriMapper">
+    <select id="getDataWaliSantri" resultType="com.asshofa.model.pojo.WaliSantriPojo">
+        select id, nama, telepon, alamat, created_at from wali_santri
+        where 1=1
+        <if test="nama != null and nama != ''">
+            <bind name="nama" value="'%' + nama + '%'"/>
+            and lower(nama) like lower(#{nama})
+        </if>
+        <if test="telepon != null and telepon != ''">
+            <bind name="telepon" value="'%' + telepon + '%'"/>
+            and lower(telepon) like lower(#{telepon})
+        </if>
+        <if test="alamat != null and alamat != ''">
+            <bind name="alamat" value="'%' + alamat + '%'"/>
+            and lower(alamat) like lower(#{alamat})
+        </if>
+        order by created_at desc
+        offset #{page} limit #{limit}
+    </select>
+
+    <select id="getAllWaliSantri" resultType="com.asshofa.model.pojo.WaliSantriPojo">
+        select id, nama
+        from wali_santri
+        order by created_at desc
+    </select>
+
+    <select id="countWaliSantri" resultType="Integer">
+        select count(*) from wali_santri
+        where 1=1
+        <if test="nama != null and nama != ''">
+            <bind name="nama" value="'%' + nama + '%'"/>
+            and lower(nama) like lower(#{nama})
+        </if>
+        <if test="telepon != null and telepon != ''">
+            <bind name="telepon" value="'%' + telepon + '%'"/>
+            and lower(telepon) like lower(#{telepon})
+        </if>
+        <if test="alamat != null and alamat != ''">
+            <bind name="alamat" value="'%' + alamat + '%'"/>
+            and lower(alamat) like lower(#{alamat})
+        </if>
+    </select>
+
+    <select id="getWaliSantriById" resultType="com.asshofa.model.pojo.WaliSantriPojo">
+        select id, nama, telepon, alamat, created_at
+        from wali_santri
+        where id = #{id}::uuid
+    </select>
+
+    <insert id="create" parameterType="com.asshofa.model.pojo.WaliSantriPojo">
+        insert into wali_santri
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">id,</if>
+            <if test="nama != null or nama != ''">nama,</if>
+            <if test="telepon != null or telepon != ''">telepon,</if>
+            <if test="alamat != null or alamat != ''">alamat,</if>
+            <if test="createdAt != null">created_at,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">#{id}::uuid,</if>
+            <if test="nama != null or nama != ''">#{nama},</if>
+            <if test="telepon != null or telepon != ''">#{telepon},</if>
+            <if test="alamat != null or alamat != ''">#{alamat},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.asshofa.model.pojo.WaliSantriPojo">
+        update wali_santri set
+        <trim suffixOverrides=",">
+            <if test="nama != null or nama != ''">nama = #{nama},</if>
+            <if test="telepon != null or telepon != ''">telepon = #{telepon},</if>
+            <if test="alamat != null or alamat != ''">alamat = #{alamat},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}::uuid
+    </update>
+
+    <delete id="delete">
+        delete
+        from wali_santri
+        where id = #{id}::uuid
+    </delete>
+</mapper>

@@ -1,6 +1,7 @@
 package com.asshofa.service.impl;
 
 import com.asshofa.mapper.SantriMapper;
+import com.asshofa.model.pojo.ListSantriPojo;
 import com.asshofa.model.pojo.SantriPojo;
 import com.asshofa.model.response.*;
 import com.asshofa.service.SantriService;
@@ -27,14 +28,14 @@ public class SantriServiceImpl implements SantriService {
     }
 
     @Override
-    public DatatableResponse<SantriPojo> getDataSantri(String nama, String bulan, String tahun, String alamat, Integer page, Integer limit) {
+    public DatatableResponse<ListSantriPojo> getDataSantri(String nama, String bulan, String tahun, String alamat, Integer page, Integer limit) {
         try {
             Integer offset = (page - 1) * limit;
 
-            List<SantriPojo> pageResult = santriMapper.getDataSantri(nama, bulan, tahun, alamat, offset, limit);
+            List<ListSantriPojo> pageResult = santriMapper.getDataSantri(nama, bulan, tahun, alamat, offset, limit);
             Integer countResult = santriMapper.countSantri(nama, bulan, tahun, alamat);
 
-            PageDataResponse<SantriPojo> data = new PageDataResponse<>(page, limit, countResult, pageResult);
+            PageDataResponse<ListSantriPojo> data = new PageDataResponse<>(page, limit, countResult, pageResult);
 
             return new DatatableResponse<>(ResponseMessage.DATA_FETCHED, data, holder);
         } catch (Exception e) {

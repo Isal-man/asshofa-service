@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.asshofa.mapper.SantriMapper">
-    <select id="getDataSantri" resultType="com.asshofa.model.pojo.SantriPojo">
-        select id, nama, tanggal_lahir, alamat, created_at, updated_at, id_wali from santri
+    <select id="getDataSantri" resultType="com.asshofa.model.pojo.ListSantriPojo">
+        select s.id, s.nama, s.tanggal_lahir, s.alamat, ws.nama as nama_wali from santri s
+        join wali_santri ws on ws.id = s.id_wali
         where 1=1
         <if test="nama != null and nama != ''">
             <bind name="nama" value="'%' + nama + '%'"/>
-            and lower(nama) like lower(#{nama})
+            and lower(s.nama) like lower(#{nama})
         </if>
         <if test="bulan != null and bulan != ''">
             <bind name="bulan" value="'%' + bulan + '%'"/>
-            and lower(to_char(tanggal_lahir::date, 'Month')) like lower(#{bulan})
+            and lower(to_char(s.tanggal_lahir::date, 'Month')) like lower(#{bulan})
         </if>
         <if test="tahun != null and tahun != ''">
             <bind name="tahun" value="'%' + tahun + '%'"/>
-            and lower(to_char(tanggal_lahir::date, 'YYYY')) like lower(#{tahun})
+            and lower(to_char(s.tanggal_lahir::date, 'YYYY')) like lower(#{tahun})
         </if>
         <if test="alamat != null and alamat != ''">
             <bind name="alamat" value="'%' + alamat + '%'"/>
-            and lower(alamat) like lower(#{alamat})
+            and lower(s.alamat) like lower(#{alamat})
         </if>
+        order by s.created_at desc
         offset #{page} limit #{limit}
     </select>
 

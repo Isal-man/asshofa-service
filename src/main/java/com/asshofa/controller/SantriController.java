@@ -1,5 +1,6 @@
 package com.asshofa.controller;
 
+import com.asshofa.model.pojo.ListSantriPojo;
 import com.asshofa.model.pojo.SantriPojo;
 import com.asshofa.model.response.DataResponse;
 import com.asshofa.model.response.DatatableResponse;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/santri")
+@CrossOrigin(origins = "*")
 @Tag(name = "Santri Service", description = "API Collections For Santri")
 public class SantriController {
 
@@ -23,8 +25,8 @@ public class SantriController {
 
     @GetMapping("get-list-santri")
     @Operation(summary = "Get All Santri", description = "Fetches all santri from data source")
-    public ResponseEntity<DatatableResponse<SantriPojo>> getDataSantri(@RequestParam(value = "nama", required = false) String nama, @RequestParam(value = "bulan", required = false) String bulan, @RequestParam(value = "tahun", required = false) String tahun, @RequestParam(value = "alamat", required = false) String alamat, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        DatatableResponse<SantriPojo> response = santriService.getDataSantri(nama, bulan, tahun, alamat, page, limit);
+    public ResponseEntity<DatatableResponse<ListSantriPojo>> getDataSantri(@RequestParam(value = "nama", required = false) String nama, @RequestParam(value = "bulan", required = false) String bulan, @RequestParam(value = "tahun", required = false) String tahun, @RequestParam(value = "alamat", required = false) String alamat, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
+        DatatableResponse<ListSantriPojo> response = santriService.getDataSantri(nama, bulan, tahun, alamat, page, limit);
         return ResponseEntity.ok(response);
     }
 
