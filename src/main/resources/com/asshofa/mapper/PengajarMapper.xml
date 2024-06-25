@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asshofa.mapper.PengajarMapper">
+    <select id="getDataPengajar" resultType="com.asshofa.model.pojo.PengajarPojo">
+        select id, nama, telepon, spesialisasi from pengajar
+        where 1=1
+        <if test="nama != null and nama != ''">
+            <bind name="nama" value="'%' + nama + '%'"/>
+            and lower(nama) like lower(#{nama})
+        </if>
+        <if test="telepon != null and telepon != ''">
+            <bind name="telepon" value="'%' + telepon + '%'"/>
+            and lower(telepon) like lower(#{telepon})
+        </if>
+        <if test="spesialisasi != null and spesialisasi != ''">
+            <bind name="spesialisasi" value="'%' + spesialisasi + '%'"/>
+            and lower(spesialisasi) like lower(#{spesialisasi})
+        </if>
+        order by created_at desc
+        offset #{page} limit #{limit}
+    </select>
+
+    <select id="countPengajar" resultType="Integer">
+        select count(*) from pengajar
+        where 1=1
+        <if test="nama != null and nama != ''">
+            <bind name="nama" value="'%' + nama + '%'"/>
+            and lower(nama) like lower(#{nama})
+        </if>
+        <if test="telepon != null and telepon != ''">
+            <bind name="telepon" value="'%' + telepon + '%'"/>
+            and lower(telepon) like lower(#{telepon})
+        </if>
+        <if test="spesialisasi != null and spesialisasi != ''">
+            <bind name="spesialisasi" value="'%' + spesialisasi + '%'"/>
+            and lower(spesialisasi) like lower(#{spesialisasi})
+        </if>
+    </select>
+
+    <select id="getPengajarById" resultType="com.asshofa.model.pojo.PengajarPojo">
+        select id, nama, spesialisasi, telepon, created_at, updated_at
+        from pengajar
+        where id = #{id}::uuid
+    </select>
+
+    <insert id="create" parameterType="com.asshofa.model.pojo.PengajarPojo">
+        insert into pengajar
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">id,</if>
+            <if test="nama != null or nama != ''">nama,</if>
+            <if test="telepon != null or telepon != ''">telepon,</if>
+            <if test="spesialisasi != null or spesialisasi != ''">spesialisasi,</if>
+            <if test="createdAt != null">created_at,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">#{id}::uuid,</if>
+            <if test="nama != null or nama != ''">#{nama},</if>
+            <if test="telepon != null or telepon != ''">#{telepon},</if>
+            <if test="spesialisasi != null or spesialisasi != ''">#{spesialisasi},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.asshofa.model.pojo.PengajarPojo">
+        update pengajar set
+        <trim suffixOverrides=",">
+            <if test="nama != null or nama != ''">nama = #{nama},</if>
+            <if test="telepon != null or telepon != ''">telepon = #{telepon},</if>
+            <if test="spesialisasi != null or spesialisasi != ''">spesialisasi = #{spesialisasi},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}::uuid
+    </update>
+
+    <delete id="delete">
+        delete
+        from pengajar
+        where id = #{id}::uuid
+    </delete>
+</mapper>

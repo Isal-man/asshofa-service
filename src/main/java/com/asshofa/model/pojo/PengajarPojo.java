@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-public class WaliSantriPojo {
+public class PengajarPojo {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
@@ -18,9 +18,10 @@ public class WaliSantriPojo {
     @Size(min = 3, max = 100, message = "Nama must have at least 3 characters and a maximum of 100 " +
             "characters")
     private String nama;
+    @NotBlank(message = "Spesialisasi cannot be empty")
+    private String spesialisasi;
     @NotBlank(message = "Telepon cannot be empty")
     private String telepon;
-    private String alamat;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp createdAt;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
