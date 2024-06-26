@@ -11,6 +11,8 @@ import java.util.List;
 public interface PengajarMapper {
     List<PengajarPojo> getDataPengajar(String nama, String telepon, String spesialisasi, Integer page, Integer limit);
 
+    List<PengajarPojo> getPengajarBySpesialisasi(String spesialisasi);
+
     PengajarPojo getPengajarById(String id);
 
     Integer countPengajar(String nama, String telepon, String spesialisasi);

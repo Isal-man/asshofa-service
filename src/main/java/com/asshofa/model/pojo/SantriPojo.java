@@ -22,6 +22,7 @@ public class SantriPojo {
     @NotBlank(message = "Tanggal lahir cannot be empty")
     private Date tanggalLahir;
     private String alamat;
+    @NotBlank(message = "ID Wali cannot be empty")
     private String idWali;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Timestamp createdAt;

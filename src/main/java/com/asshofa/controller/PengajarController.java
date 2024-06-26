@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pengajar")
 @CrossOrigin(origins = "*")
@@ -26,6 +28,13 @@ public class PengajarController {
     @Operation(summary = "Get All Pengajar", description = "Fetches all pengajar from data source")
     public ResponseEntity<DatatableResponse<PengajarPojo>> getDataPengajar(@RequestParam(value = "nama", required = false) String nama, @RequestParam(value = "telepon", required = false) String telepon, @RequestParam(value = "spesialisasi", required = false) String spesialisasi, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
         DatatableResponse<PengajarPojo> response = pengajarService.getDataPengajar(nama, telepon, spesialisasi, page, limit);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("get-pengajar-by-spesialisasi")
+    @Operation(summary = "Get Pengajar by Spesialisasi", description = "Fetches all pengajar by spesialisasi from data source")
+    public ResponseEntity<DataResponse<List<PengajarPojo>>> getPengajarBySpesialisasi(@RequestParam("idSpesialisasi") String idSpesialisasi) {
+        DataResponse<List<PengajarPojo>> response = pengajarService.getPengajarBySpesialisasi(idSpesialisasi);
         return ResponseEntity.ok(response);
     }
 

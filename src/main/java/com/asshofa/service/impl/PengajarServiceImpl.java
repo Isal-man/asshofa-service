@@ -1,7 +1,9 @@
 package com.asshofa.service.impl;
 
 import com.asshofa.mapper.PengajarMapper;
+import com.asshofa.mapper.SpesialisasiMapper;
 import com.asshofa.model.pojo.PengajarPojo;
+import com.asshofa.model.pojo.SpesialisasiPojo;
 import com.asshofa.model.response.*;
 import com.asshofa.service.PengajarService;
 import com.asshofa.util.interceptor.LoggingHolder;
@@ -17,12 +19,14 @@ import java.util.UUID;
 public class PengajarServiceImpl implements PengajarService {
 
     private final PengajarMapper pengajarMapper;
+    private final SpesialisasiMapper spesialisasiMapper;
     private final LoggingHolder holder;
 
     private static final Logger log = LogManager.getLogger(PengajarServiceImpl.class);
 
-    public PengajarServiceImpl(PengajarMapper pengajarMapper, LoggingHolder holder) {
+    public PengajarServiceImpl(PengajarMapper pengajarMapper, SpesialisasiMapper spesialisasiMapper, LoggingHolder holder) {
         this.pengajarMapper = pengajarMapper;
+        this.spesialisasiMapper = spesialisasiMapper;
         this.holder = holder;
     }
 
@@ -39,6 +43,18 @@ public class PengajarServiceImpl implements PengajarService {
             return new DatatableResponse<>(ResponseMessage.DATA_FETCHED, data, holder);
         } catch (Exception e) {
             log.error("Error when get data pengajar", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public DataResponse<List<PengajarPojo>> getPengajarBySpesialisasi(String idSpesialisasi) {
+        try {
+            SpesialisasiPojo spesialisasi = spesialisasiMapper.getSpesialisasiById(idSpesialisasi);
+            List<PengajarPojo> data = pengajarMapper.getPengajarBySpesialisasi(spesialisasi.getSpesialisasi());
+            return new DataResponse<>(ResponseMessage.DATA_FETCHED, data, holder);
+        } catch (Exception e) {
+            log.error("Error when get data pengajar by spesialisasi", e);
             throw e;
         }
     }

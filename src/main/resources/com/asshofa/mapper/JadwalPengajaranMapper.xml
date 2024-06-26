@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asshofa.mapper.JadwalPengajaranMapper">
+    <select id="getDataJadwalPengajaran" resultType="com.asshofa.model.pojo.JadwalPengajaranPojo">
+        select s.id, s.hari, s.jam_mulai, s.jam_selesai, s.mata_pelajaran, ws.nama as nama_pengajar from
+        jadwal_pengajaran s
+        join pengajar ws on ws.id = s.id_pengajar
+        where 1=1
+        <if test="hari != null and hari != ''">
+            <bind name="hari" value="'%' + hari + '%'"/>
+            and lower(s.hari) like lower(#{hari})
+        </if>
+        <if test="mataPelajaran != null and mataPelajaran != ''">
+            <bind name="mataPelajaran" value="'%' + mataPelajaran + '%'"/>
+            and lower(s.mata_pelajaran) like lower(#{mataPelajaran})
+        </if>
+        order by s.created_at desc
+        offset #{page} limit #{limit}
+    </select>
+
+    <select id="countJadwalPengajaran" resultType="Integer">
+        select count(*) from jadwal_pengajaran s
+        where 1=1
+        <if test="hari != null and hari != ''">
+            <bind name="hari" value="'%' + hari + '%'"/>
+            and lower(s.hari) like lower(#{hari})
+        </if>
+        <if test="mataPelajaran != null and mataPelajaran != ''">
+            <bind name="mataPelajaran" value="'%' + mataPelajaran + '%'"/>
+            and lower(s.mata_pelajaran) like lower(#{mataPelajaran})
+        </if>
+    </select>
+
+    <select id="getJadwalPengajaranById" resultType="com.asshofa.model.pojo.JadwalPengajaranPojo">
+        select id, hari, jam_mulai, jam_selesai, mata_pelajaran, id_pengajar
+        from jadwal_pengajaran
+        where id = #{id}::uuid
+    </select>
+
+    <insert id="create" parameterType="com.asshofa.model.pojo.JadwalPengajaranPojo">
+        insert into jadwal_pengajaran
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">id,</if>
+            <if test="hari != null or hari != ''">hari,</if>
+            <if test="jamMulai != null or jamMulai != ''">jam_mulai,</if>
+            <if test="jamSelesai != null or jamSelesai != ''">jam_selesai,</if>
+            <if test="mataPelajaran != null or mataPelajaran != ''">mata_pelajaran,</if>
+            <if test="idPengajar != null or idPengajar != ''">id_pengajar,</if>
+            <if test="createdAt != null">created_at,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">#{id}::uuid,</if>
+            <if test="hari != null or hari != ''">#{hari},</if>
+            <if test="jamMulai != null or jamMulai != ''">#{jamMulai},</if>
+            <if test="jamSelesai != null or jamSelesai != ''">#{jamSelesai},</if>
+            <if test="mataPelajaran != null or mataPelajaran != ''">#{mataPelajaran},</if>
+            <if test="idPengajar != null or idPengajar != ''">#{idPengajar}::uuid,</if>
+            <if test="createdAt != null">#{createdAt},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.asshofa.model.pojo.JadwalPengajaranPojo">
+        update jadwal_pengajaran set
+        <trim suffixOverrides=",">
+            <if test="hari != null or hari != ''">hari = #{hari},</if>
+            <if test="jamMulai != null or jamMulai != ''">jam_mulai = #{jamMulai},</if>
+            <if test="jamSelesai != null or jamSelesai != ''">jam_selesai = #{jamSelesai},</if>
+            <if test="mataPelajaran != null or mataPelajaran != ''">mata_pelajaran = #{mataPelajaran},</if>
+            <if test="idPengajar != null or idPengajar != ''">id_pengajar = #{idPengajar}::uuid,</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}::uuid
+    </update>
+
+    <delete id="delete">
+        delete
+        from jadwal_pengajaran
+        where id = #{id}::uuid
+    </delete>
+</mapper>

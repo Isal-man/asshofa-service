@@ -43,6 +43,12 @@
         where id = #{id}::uuid
     </select>
 
+    <select id="getPengajarBySpesialisasi" resultType="com.asshofa.model.pojo.PengajarPojo">
+        select id, nama, spesialisasi, telepon, created_at, updated_at
+        from pengajar
+        where spesialisasi = #{spesialisasi}
+    </select>
+
     <insert id="create" parameterType="com.asshofa.model.pojo.PengajarPojo">
         insert into pengajar
         <trim prefix="(" suffix=")" suffixOverrides=",">

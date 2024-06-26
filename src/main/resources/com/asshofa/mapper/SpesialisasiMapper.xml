@@ -5,4 +5,9 @@
         select id, spesialisasi
         from spesialisasi
     </select>
+    <select id="getSpesialisasiById" resultType="com.asshofa.model.pojo.SpesialisasiPojo">
+        select id, spesialisasi
+        from spesialisasi
+        where id = #{id}::uuid
+    </select>
 </mapper>
