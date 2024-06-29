@@ -12,7 +12,11 @@ import java.util.List;
 public interface SantriMapper {
     List<ListSantriPojo> getDataSantri(String nama, String bulan, String tahun, String alamat, Integer page, Integer limit);
 
+    List<SantriPojo> getDataSelectSantri(String nama);
+
     SantriPojo getSantriById(String id);
+
+    SantriPojo getSantriByNama(String nama);
 
     Integer countSantri(String nama, String bulan, String tahun, String alamat);
 

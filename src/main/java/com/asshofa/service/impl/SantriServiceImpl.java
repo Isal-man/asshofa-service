@@ -45,9 +45,31 @@ public class SantriServiceImpl implements SantriService {
     }
 
     @Override
+    public DataResponse<List<SantriPojo>> getDataSelectSantri(String nama) {
+        try {
+            List<SantriPojo> data = santriMapper.getDataSelectSantri(nama);
+            return new DataResponse<>(ResponseMessage.DATA_FETCHED, data, holder);
+        } catch (Exception e) {
+            log.error("Error when get data select santri", e);
+            throw e;
+        }
+    }
+
+    @Override
     public DataResponse<SantriPojo> getSantri(String id) {
         try {
             SantriPojo data = santriMapper.getSantriById(id);
+            return new DataResponse<>(ResponseMessage.DATA_FETCHED, data, holder);
+        } catch (Exception e) {
+            log.error("Error when get santri", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public DataResponse<SantriPojo> getSantriByNama(String nama) {
+        try {
+            SantriPojo data = santriMapper.getSantriByNama(nama);
             return new DataResponse<>(ResponseMessage.DATA_FETCHED, data, holder);
         } catch (Exception e) {
             log.error("Error when get santri", e);

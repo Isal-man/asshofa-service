@@ -46,10 +46,28 @@
         </if>
     </select>
 
+    <select id="getDataSelectSantri" resultType="com.asshofa.model.pojo.SantriPojo">
+        select id, nama, created_at
+        from santri
+        where 1=1
+        <if test="nama != null and nama != ''">
+            <bind name="nama" value="'%' + nama + '%'"/>
+            and lower(nama) like lower(#{nama})
+        </if>
+        order by created_at asc
+        limit 10
+    </select>
+
     <select id="getSantriById" resultType="com.asshofa.model.pojo.SantriPojo">
         select id, nama, tanggal_lahir, alamat, created_at, updated_at, id_wali
         from santri
         where id = #{id}::uuid
+    </select>
+
+    <select id="getSantriByNama" resultType="com.asshofa.model.pojo.SantriPojo">
+        select id, nama
+        from santri
+        where nama = #{nama}
     </select>
 
     <insert id="create" parameterType="com.asshofa.model.pojo.SantriPojo">

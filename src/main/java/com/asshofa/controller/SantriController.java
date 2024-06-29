@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/santri")
 @CrossOrigin(origins = "*")
@@ -30,10 +32,24 @@ public class SantriController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("get-select-santri")
+    @Operation(summary = "Get Select Santri", description = "Fetch selected santri from data source")
+    public ResponseEntity<DataResponse<List<SantriPojo>>> getDataSelectSantri(@RequestParam(value = "nama", required = false) String nama) {
+        DataResponse<List<SantriPojo>> response = santriService.getDataSelectSantri(nama);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("get-santri")
     @Operation(summary = "Get Santri", description = "Fetch santri from data source")
     public ResponseEntity<DataResponse<SantriPojo>> getSantri(@RequestParam("id") String id) {
         DataResponse<SantriPojo> response = santriService.getSantri(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("get-santri-by-nama")
+    @Operation(summary = "Get Santri by Nama", description = "Fetch santri by nama from data source")
+    public ResponseEntity<DataResponse<SantriPojo>> getSantriByNama(@RequestParam("nama") String nama) {
+        DataResponse<SantriPojo> response = santriService.getSantriByNama(nama);
         return ResponseEntity.ok(response);
     }
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asshofa.mapper.PenilaianMapper">
+    <select id="getDataPenilaian" resultType="com.asshofa.model.pojo.PenilaianPojo">
+        select s.id, s.tanggal_penilaian, s.nilai, ws.nama as nama_pelajar from
+        penilaian s
+        join santri ws on ws.id = s.id_santri
+        where s.id_jadwal = #{idJadwal}::uuid
+        <if test="namaPelajar != null and namaPelajar != ''">
+            <bind name="namaPelajar" value="'%' + namaPelajar + '%'"/>
+            and lower(s.nama) like lower(#{namaPelajar})
+        </if>
+        order by s.created_at desc
+        offset #{page} limit #{limit}
+    </select>
+
+    <select id="countPenilaian" resultType="Integer">
+        select count(*) from penilaian s
+        where s.id_jadwal = #{idJadwal}::uuid
+        <if test="namaPelajar != null and namaPelajar != ''">
+            <bind name="namaPelajar" value="'%' + namaPelajar + '%'"/>
+            and lower(s.nama) like lower(#{namaPelajar})
+        </if>
+    </select>
+
+    <select id="getPenilaianById" resultType="com.asshofa.model.pojo.PenilaianPojo">
+        select s.id,
+               s.tanggal_penilaian,
+               s.nilai,
+               ws.nama as nama_pelajar
+        from penilaian s
+                 join santri ws on ws.id = s.id_santri
+        where s.id =
+              #{id}::uuid
+    </select>
+
+    <insert id="create" parameterType="com.asshofa.model.pojo.PenilaianPojo">
+        insert into penilaian
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">id,</if>
+            <if test="nilai != null or nilai != ''">nilai,</if>
+            <if test="tanggalPenilaian != null or tanggalPenilaian != ''">tanggal_penilaian,</if>
+            <if test="idSantri != null or idSantri != ''">id_santri,</if>
+            <if test="idJadwal != null or idJadwal != ''">id_jadwal,</if>
+            <if test="createdAt != null">created_at,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null or id != ''">#{id}::uuid,</if>
+            <if test="nilai != null or nilai != ''">#{nilai},</if>
+            <if test="tanggalPenilaian != null or tanggalPenilaian != ''">#{tanggalPenilaian},</if>
+            <if test="idSantri != null or idSantri != ''">#{idSantri}::uuid,</if>
+            <if test="idJadwal != null or idJadwal != ''">#{idJadwal}::uuid,</if>
+            <if test="createdAt != null">#{createdAt},</if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.asshofa.model.pojo.PenilaianPojo">
+        update penilaian set
+        <trim suffixOverrides=",">
+            <if test="nilai != null or nilai != ''">nilai = #{nilai},</if>
+            <if test="tanggalPenilaian != null or tanggalPenilaian != ''">tanggal_penilaian = #{tanggalPenilaian},</if>
+            <if test="idSantri != null or idSantri != ''">id_santri = #{idSantri}::uuid,</if>
+            <if test="idJadwal != null or idJadwal != ''">id_jadwal = #{idJadwal}::uuid,</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </trim>
+        where id = #{id}::uuid
+    </update>
+
+    <delete id="delete">
+        delete
+        from penilaian
+        where id = #{id}::uuid
+    </delete>
+</mapper>
