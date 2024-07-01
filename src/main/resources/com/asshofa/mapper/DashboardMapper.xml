@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.asshofa.mapper.DashboardMapper">
+    <select id="jumlahSantri" resultType="Integer">
+        select count(id)
+        from santri;
+    </select>
+
+    <select id="jumlahSantriPerTahun" resultType="com.asshofa.model.pojo.JumlahSantriByTahunPojo">
+        SELECT EXTRACT(YEAR FROM tanggal_lahir) AS tahun_kelahiran, COUNT(*) AS total
+        FROM santri
+        GROUP BY EXTRACT(YEAR FROM tanggal_lahir)
+        ORDER BY (tahun_kelahiran)
+    </select>
+
+    <select id="jumlahSantriPerBulan" resultType="com.asshofa.model.pojo.JumlahSantriByBulanPojo">
+        SELECT EXTRACT(MONTH FROM tanggal_lahir) AS bulan_kelahiran, COUNT(*) AS total
+        FROM santri
+        GROUP BY EXTRACT(MONTH FROM tanggal_lahir)
+        ORDER BY bulan_kelahiran;
+    </select>
+
+    <select id="rataRataNilai" resultType="com.asshofa.model.pojo.RataRataNilaiPojo">
+        SELECT mp.nama as label, AVG(p.nilai) AS value
+        FROM penilaian p
+            join jadwal_pengajaran jp
+        on jp.id = p.id_jadwal
+            join mata_pelajaran mp on mp.nama = jp.mata_pelajaran
+        GROUP BY mp.nama
+        ORDER BY mp.nama;
+    </select>
+</mapper>
