@@ -13,15 +13,15 @@ public class DataResponse<T> {
     String detail ;
     String path ;
     String date ;
-    int code ;
     String version ;
     T data;
 
-    public DataResponse(String detail, T data, LoggingHolder h) {
+    public DataResponse(String result, String detail, T data, LoggingHolder h) {
         this.detail = detail;
         this.path = h.getPath();
         this.date = h.getDate();
         this.version = h.getVersion();
         this.data = data;
+        this.result = result;
     }
 }

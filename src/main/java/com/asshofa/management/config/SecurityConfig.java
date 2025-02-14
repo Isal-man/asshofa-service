@@ -21,12 +21,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeRequests(auth -> auth
+                        .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .antMatchers("/auth/**").permitAll()
                         .antMatchers("/admin/**").hasRole("ADMIN")
                         .antMatchers("/pengajar/**").hasRole("PENGAJAR")
-                        .antMatchers("/wali/**").hasRole("WALI SANTRI")
-                        .anyRequest().authenticated()
-                ).httpBasic()
+                        .antMatchers("/wali/**").hasRole("WALI")
+                        .anyRequest().authenticated())
+                .httpBasic()
                 .and().build();
     }
 

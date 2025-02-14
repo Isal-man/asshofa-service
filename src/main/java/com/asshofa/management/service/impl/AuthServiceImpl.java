@@ -10,6 +10,7 @@ import com.asshofa.management.model.response.JwtResponse;
 import com.asshofa.management.model.response.ResponseMessage;
 import com.asshofa.management.repository.UsersRepository;
 import com.asshofa.management.service.AuthService;
+import com.asshofa.management.util.Constant;
 import com.asshofa.management.util.PasswordUtil;
 import com.asshofa.management.util.interceptor.LoggingHolder;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +41,8 @@ public class AuthServiceImpl implements AuthService {
             user.setUsername(registerUserPojo.getUsername());
             user.setPassword(PasswordUtil.encode(registerUserPojo.getPassword()));
             user.setRole(registerUserPojo.getRole());
-            return new DataResponse<>(ResponseMessage.DATA_CREATED, usersRepository.save(user), loggingHolder);
+            user.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+            return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, usersRepository.save(user), loggingHolder);
         } catch (Exception e) {
             logger.error("error when register user", e);
             throw e;
@@ -80,7 +84,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtResponse refreshToken(RefreshTokenPojo token) {
         try {
-            if (validateToken(token.getRefreshToken())) {
+            if (Boolean.TRUE.equals(validateToken(token.getRefreshToken()))) {
                 String username = jwtTokenProvider.getUsernameFromToken(token.getRefreshToken());
                 String newToken = jwtTokenProvider.generateToken(username);
                 return new JwtResponse(newToken);
