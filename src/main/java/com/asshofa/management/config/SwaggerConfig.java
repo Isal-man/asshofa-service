@@ -1,31 +1,39 @@
 package com.asshofa.management.config;
 
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@SecurityScheme(
-        name = "Bearer Authentication",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        scheme = "bearer"
-)
 public class SwaggerConfig {
+
+    private static final String BEARER_AUTH = "bearerAuth";
+
     @Bean
     public OpenAPI springAppOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("Asshofa Management Service")
+                .info(new Info()
+                        .title("Asshofa Management Service")
                         .description("RESTful API For Asshofa Management")
                         .version("v0.0.1")
-                        .license(new License().name("For Internal Use Only").url("http://asshofa.sch")))
+                        .license(new License().name("For Internal Use Only").url("http://asshofa.sch"))
+                )
                 .externalDocs(new ExternalDocumentation()
                         .description("Spring Boot Documentation")
-                        .url("https://bit.ly/4cFhdZi"));
+                        .url("https://bit.ly/4cFhdZi")
+                )
+                .addSecurityItem(new SecurityRequirement().addList(BEARER_AUTH))
+                .components(new Components().addSecuritySchemes(BEARER_AUTH,
+                        new SecurityScheme()
+                                .name(BEARER_AUTH)
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")));
     }
 }

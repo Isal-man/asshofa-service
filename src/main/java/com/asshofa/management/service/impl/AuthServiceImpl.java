@@ -1,9 +1,9 @@
 package com.asshofa.management.service.impl;
 
 import com.asshofa.management.config.JwtTokenProvider;
+import com.asshofa.management.exception.custom.UnauthorizedException;
 import com.asshofa.management.model.entity.Users;
 import com.asshofa.management.model.pojo.LoginUserPojo;
-import com.asshofa.management.model.pojo.RefreshTokenPojo;
 import com.asshofa.management.model.pojo.RegisterUserPojo;
 import com.asshofa.management.model.response.DataResponse;
 import com.asshofa.management.model.response.JwtResponse;
@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -28,19 +28,20 @@ import java.sql.Timestamp;
 public class AuthServiceImpl implements AuthService {
 
     private final UsersRepository usersRepository;
-    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
     private final LoggingHolder loggingHolder;
 
     private static final Logger logger = LogManager.getLogger(AuthServiceImpl.class);
 
     @Override
-    public DataResponse<Users> registerUser(RegisterUserPojo registerUserPojo) {
+    public DataResponse<Users> registerUser(RegisterUserPojo register) {
         try {
+
             Users user = new Users();
-            user.setUsername(registerUserPojo.getUsername());
-            user.setPassword(PasswordUtil.encode(registerUserPojo.getPassword()));
-            user.setRole(registerUserPojo.getRole());
+            user.setUsername(register.getUsername());
+            user.setPassword(PasswordUtil.encode(register.getPassword()));
+            user.setRole(register.getRole());
             user.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, usersRepository.save(user), loggingHolder);
         } catch (Exception e) {
@@ -50,10 +51,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public JwtResponse authenticateUser(LoginUserPojo loginUserPojo) {
+    public JwtResponse authenticateUser(LoginUserPojo login) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUserPojo.getUsername(), loginUserPojo.getPassword()));
-            String token = jwtTokenProvider.generateToken(loginUserPojo.getUsername());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(login.getUsername());
+
+            if (!PasswordUtil.matchPassword(login.getPassword(), userDetails.getPassword())) throw new UnauthorizedException(ResponseMessage.UNAUTHORIZED);
+
+            String token = jwtTokenProvider.generateToken(userDetails.getUsername());
             return new JwtResponse(token);
         } catch (Exception e) {
             logger.error("error when authenticate user.", e);
@@ -82,10 +86,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public JwtResponse refreshToken(RefreshTokenPojo token) {
+    public JwtResponse refreshToken(String token) {
         try {
-            if (Boolean.TRUE.equals(validateToken(token.getRefreshToken()))) {
-                String username = jwtTokenProvider.getUsernameFromToken(token.getRefreshToken());
+            if (Boolean.TRUE.equals(validateToken(token))) {
+                String username = getUsernameFromToken(token);
                 String newToken = jwtTokenProvider.generateToken(username);
                 return new JwtResponse(newToken);
             } else {
