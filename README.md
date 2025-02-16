@@ -1,12 +1,12 @@
 
-# Spring Boot JPA Guidelines
+# Asshofa Management App
 
-Petunjuk pembuatan Restful API menggunakan Java Spring Boot dan JPA.
+Aplikasi ini dibuat untuk memenuhi kebutuhan tugas akhir.
 
 
 
 
 ## Authors
 
-- [@arifkurn](https://gitlab.customs.go.id/arifkurn)
+- [@Isal-man](https://gitlab.customs.go.id/Isal-man)
 
