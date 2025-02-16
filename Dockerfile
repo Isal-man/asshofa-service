@@ -6,6 +6,9 @@ WORKDIR /app
 # Copy seluruh proyek ke dalam container
 COPY . .
 
+# Beri izin eksekusi untuk mvnw
+RUN chmod +x mvnw
+
 # Build aplikasi dengan Maven tanpa menjalankan test
 RUN ./mvnw clean package -DskipTests
 
