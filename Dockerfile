@@ -16,7 +16,7 @@ RUN ./mvnw clean package -DskipTests
 COPY target/*.jar app.jar
 
 # Tentukan port yang digunakan aplikasi
-EXPOSE 9090
+EXPOSE 8000
 
 # Jalankan aplikasi
 ENTRYPOINT ["sh", "-c", "java -jar app.jar"]
