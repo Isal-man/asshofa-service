@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "wali_santri", schema = "asshofa_management")
+@Table(name = "wali_santri")
 public class WaliSantri {
 
     @Id

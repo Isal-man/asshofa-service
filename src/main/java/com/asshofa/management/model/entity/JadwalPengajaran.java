@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "jadwal_pengajaran", schema = "asshofa_management")
+@Table(name = "jadwal_pengajaran")
 public class JadwalPengajaran {
 
     @Id
