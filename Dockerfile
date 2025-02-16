@@ -6,6 +6,9 @@ WORKDIR /app
 # Copy seluruh proyek ke dalam container
 COPY . .
 
+# Beri izin eksekusi untuk mvnw
+RUN chmod +x mvnw
+
 # Build aplikasi dengan Maven tanpa menjalankan test
 RUN ./mvnw clean package -DskipTests
 
@@ -13,7 +16,7 @@ RUN ./mvnw clean package -DskipTests
 COPY target/*.jar app.jar
 
 # Tentukan port yang digunakan aplikasi
-EXPOSE 9090
+EXPOSE 8000
 
 # Jalankan aplikasi
 ENTRYPOINT ["sh", "-c", "java -jar app.jar"]
