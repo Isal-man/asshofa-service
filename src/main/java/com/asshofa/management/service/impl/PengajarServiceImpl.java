@@ -85,6 +85,7 @@ public class PengajarServiceImpl implements PengajarService {
 
             Pengajar newPengajar = new Pengajar();
             newPengajar.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+            newPengajar.setGambar(rekam.getGambar() != null ? rekam.getGambar() : Constant.DEFAULT_IMAGE);
 
             Pengajar pengajar = pengajarRepository.save(toEntity(rekam, newPengajar));
 
@@ -103,6 +104,7 @@ public class PengajarServiceImpl implements PengajarService {
             Optional<Pengajar> updatePengajar = pengajarRepository.findById(EncryptionUtil.decrypt(id));
             if (!updatePengajar.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
             updatePengajar.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+            updatePengajar.get().setGambar(rekam.getGambar() != null ? rekam.getGambar() : updatePengajar.get().getGambar());
 
             Pengajar pengajar = pengajarRepository.save(toEntity(rekam, updatePengajar.get()));
 

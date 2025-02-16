@@ -14,4 +14,5 @@ public class RekamPengajarPojo {
     private String alamat;
     @NotBlank(message = "Spesialisasi tidak boleh kosong")
     private String spesialisasi;
+    private String gambar;
 }

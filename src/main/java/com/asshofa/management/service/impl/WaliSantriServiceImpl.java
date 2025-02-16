@@ -51,6 +51,7 @@ public class WaliSantriServiceImpl implements WaliSantriService {
             WaliSantri newWaliSantri = new WaliSantri();
             newWaliSantri.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
             WaliSantri waliSantri = waliSantriRepository.save(toEntity(rekam, newWaliSantri));
+            waliSantri.setGambar(rekam.getGambar() != null ? rekam.getGambar() : Constant.DEFAULT_IMAGE);
 
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, toPojoDetailWaliSantri(waliSantri), loggingHolder);
         } catch (Exception e) {
@@ -67,6 +68,7 @@ public class WaliSantriServiceImpl implements WaliSantriService {
             Optional<WaliSantri> waliSantri = waliSantriRepository.findById(EncryptionUtil.decrypt(id));
             if (!waliSantri.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
             waliSantri.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+            waliSantri.get().setGambar(rekam.getGambar() != null ? rekam.getGambar() : waliSantri.get().getGambar());
 
             WaliSantri updateWaliSantri = waliSantriRepository.save(toEntity(rekam, waliSantri.get()));
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_UPDATED, toPojoDetailWaliSantri(updateWaliSantri), loggingHolder);

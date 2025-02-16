@@ -43,6 +43,11 @@ public class AuthServiceImpl implements AuthService {
             user.setPassword(PasswordUtil.encode(register.getPassword()));
             user.setRole(register.getRole());
             user.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+
+            if (register.getGambar() == null) {
+                register.setGambar(Constant.DEFAULT_IMAGE);
+            }
+
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, usersRepository.save(user), loggingHolder);
         } catch (Exception e) {
             logger.error("error when register user", e);

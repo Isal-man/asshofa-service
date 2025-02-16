@@ -24,6 +24,7 @@ public class WaliSantri {
 
     private String namaLengkap;
     private String noTelepon;
+    private String gambar;
 
     @Column(columnDefinition = "text")
     private String alamat;

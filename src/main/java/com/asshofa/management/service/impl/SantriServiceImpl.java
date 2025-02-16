@@ -89,6 +89,8 @@ public class SantriServiceImpl implements SantriService {
             Santri newSantri = new Santri();
             newSantri.setWaliSantri(waliSantri.get());
             newSantri.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+            newSantri.setGambar(rekam.getGambar() != null ? rekam.getGambar() : Constant.DEFAULT_IMAGE);
+
             Santri santri = santriRepository.save(toEntity(rekam, newSantri));
 
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, toPojoDetailSantri(santri), loggingHolder);
@@ -111,6 +113,8 @@ public class SantriServiceImpl implements SantriService {
 
             santri.get().setWaliSantri(waliSantri.get());
             santri.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+            santri.get().setGambar(rekam.getGambar() != null ? rekam.getGambar() : santri.get().getGambar());
+
             Santri updateSantri = santriRepository.save(toEntity(rekam, santri.get()));
 
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_UPDATED, toPojoDetailSantri(updateSantri), loggingHolder);

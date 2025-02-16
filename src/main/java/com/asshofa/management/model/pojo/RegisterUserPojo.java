@@ -21,4 +21,6 @@ public class RegisterUserPojo {
 
     @NotBlank(message = "Role tidak boleh kosong")
     private String role;
+
+    private String gambar;
 }

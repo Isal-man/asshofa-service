@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -24,6 +23,7 @@ public class Pengajar {
 
     private String namaLengkap;
     private String noTelepon;
+    private String gambar;
 
     @Column(columnDefinition = "text")
     private String alamat;

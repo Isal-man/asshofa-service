@@ -26,6 +26,7 @@ public class Santri {
     private String tempatLahir;
     private LocalDate tanggalLahir;
     private String jenisKelamin;
+    private String gambar;
 
     @Column(columnDefinition = "text")
     private String alamat;

@@ -34,6 +34,7 @@ public class JwtTokenProvider {
             Map<String, Object> claims = new HashMap<>();
             claims.put("username", users.getUsername());
             claims.put("role", users.getRole());
+            claims.put("gambar", users.getGambar());
             claims.put("createdAt", users.getCreatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             claims.put("updatedAt", users.getUpdatedAt() != null ? users.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : null);
 

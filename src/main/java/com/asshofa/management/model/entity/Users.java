@@ -3,7 +3,6 @@ package com.asshofa.management.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,6 +20,7 @@ public class Users {
 
     private String username;
     private String password;
+    private String gambar;
     private String role;
 
     private LocalDateTime createdAt;

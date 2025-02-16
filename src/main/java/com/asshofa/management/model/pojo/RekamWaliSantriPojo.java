@@ -16,4 +16,5 @@ public class RekamWaliSantriPojo {
     private String alamat;
     @NotBlank(message = "Hubungan dengan santri tidak boleh kosong.")
     private String hubunganDenganSantri;
+    private String gambar;
 }
