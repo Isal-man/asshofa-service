@@ -3,7 +3,13 @@ FROM openjdk:8-jdk-alpine
 # Set working directory di dalam container
 WORKDIR /app
 
-# Copy file JAR aplikasi ke dalam container
+# Copy seluruh proyek ke dalam container
+COPY . .
+
+# Build aplikasi dengan Maven tanpa menjalankan test
+RUN ./mvnw clean package -DskipTests
+
+# Copy file JAR hasil build ke lokasi yang diinginkan
 COPY target/*.jar app.jar
 
 # Tentukan port yang digunakan aplikasi
