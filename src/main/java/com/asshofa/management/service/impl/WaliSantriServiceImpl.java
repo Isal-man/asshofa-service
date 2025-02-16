@@ -3,6 +3,7 @@ package com.asshofa.management.service.impl;
 import com.asshofa.management.exception.custom.NotFoundException;
 import com.asshofa.management.model.entity.Santri;
 import com.asshofa.management.model.entity.WaliSantri;
+import com.asshofa.management.model.param.BrowseWaliSantriParam;
 import com.asshofa.management.model.pojo.*;
 import com.asshofa.management.model.projection.BrowseWaliSantriProjection;
 import com.asshofa.management.model.response.*;

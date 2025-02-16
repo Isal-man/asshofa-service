@@ -1,6 +1,6 @@
 package com.asshofa.management.service;
 
-import com.asshofa.management.model.pojo.BrowseSantriParam;
+import com.asshofa.management.model.param.BrowseSantriParam;
 import com.asshofa.management.model.pojo.BrowseSantriPojo;
 import com.asshofa.management.model.pojo.DetailSantriPojo;
 import com.asshofa.management.model.pojo.RekamSantriPojo;

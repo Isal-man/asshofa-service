@@ -1,6 +1,6 @@
 package com.asshofa.management.controller;
 
-import com.asshofa.management.model.pojo.BrowsePengajarParam;
+import com.asshofa.management.model.param.BrowsePengajarParam;
 import com.asshofa.management.model.pojo.BrowsePengajarPojo;
 import com.asshofa.management.model.pojo.DetailPengajarPojo;
 import com.asshofa.management.model.pojo.RekamPengajarPojo;

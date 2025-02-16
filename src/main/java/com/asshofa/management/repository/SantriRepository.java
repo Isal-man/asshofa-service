@@ -2,7 +2,7 @@ package com.asshofa.management.repository;
 
 import com.asshofa.management.model.entity.Santri;
 import com.asshofa.management.model.entity.WaliSantri;
-import com.asshofa.management.model.pojo.BrowseSantriParam;
+import com.asshofa.management.model.param.BrowseSantriParam;
 import com.asshofa.management.model.projection.BrowseSantriProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

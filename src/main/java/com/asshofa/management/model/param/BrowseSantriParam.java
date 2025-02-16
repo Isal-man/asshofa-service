@@ -1,4 +1,4 @@
-package com.asshofa.management.model.pojo;
+package com.asshofa.management.model.param;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -53,6 +53,16 @@ public class CheckRole {
         aksesRole(roles);
     }
 
+    public void checkRoleDetailJadwalPengajaran() {
+        List<String> roles = Arrays.asList(
+                Constant.ADMIN,
+                Constant.PENGAJAR,
+                Constant.SANTRI
+        );
+
+        aksesRole(roles);
+    }
+
     public void aksesRole(List<String> roles) {
         List<String> roleList = Arrays.asList(headerHolder.getRoles());
 

@@ -1,7 +1,7 @@
 package com.asshofa.management.repository;
 
 import com.asshofa.management.model.entity.Pengajar;
-import com.asshofa.management.model.pojo.BrowsePengajarParam;
+import com.asshofa.management.model.param.BrowsePengajarParam;
 import com.asshofa.management.model.projection.BrowsePengajarProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

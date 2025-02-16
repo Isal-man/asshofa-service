@@ -1,6 +1,6 @@
 package com.asshofa.management.controller;
 
-import com.asshofa.management.model.pojo.BrowseWaliSantriParam;
+import com.asshofa.management.model.param.BrowseWaliSantriParam;
 import com.asshofa.management.model.pojo.BrowseWaliSantriPojo;
 import com.asshofa.management.model.pojo.DetailWaliSantriPojo;
 import com.asshofa.management.model.pojo.RekamWaliSantriPojo;

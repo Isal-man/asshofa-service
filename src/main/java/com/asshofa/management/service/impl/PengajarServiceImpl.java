@@ -1,10 +1,11 @@
 package com.asshofa.management.service.impl;
 
 import com.asshofa.management.exception.custom.NotFoundException;
+import com.asshofa.management.model.entity.JadwalPengajaran;
 import com.asshofa.management.model.entity.Pengajar;
+import com.asshofa.management.model.param.BrowsePengajarParam;
 import com.asshofa.management.model.pojo.*;
 import com.asshofa.management.model.projection.BrowsePengajarProjection;
-import com.asshofa.management.model.projection.DetailJadwalPengajaranProjection;
 import com.asshofa.management.model.response.*;
 import com.asshofa.management.repository.JadwalPengajaranRepository;
 import com.asshofa.management.repository.PengajarRepository;
@@ -146,7 +147,7 @@ public class PengajarServiceImpl implements PengajarService {
     }
 
     private DetailPengajarPojo toPojoDetailPengajar(Pengajar pengajar) {
-        List<DetailJadwalPengajaranProjection> jadwalPengajaranList = jadwalPengajaranRepository.findByPengajar(pengajar);
+        List<JadwalPengajaran> jadwalPengajaranList = jadwalPengajaranRepository.findByPengajar(pengajar);
 
         return DetailPengajarPojo.builder()
                 .id(EncryptionUtil.encrypt(pengajar.getId()))
@@ -158,15 +159,15 @@ public class PengajarServiceImpl implements PengajarService {
                 .build();
     }
 
-    private List<DetailJadwalPengajaranPojo> toPojoDetailJadwalPengajaran(List<DetailJadwalPengajaranProjection> list) {
+    private List<DetailJadwalPengajaranPojo> toPojoDetailJadwalPengajaran(List<JadwalPengajaran> list) {
         List<DetailJadwalPengajaranPojo> detailJadwalPengajaranList = new ArrayList<>();
 
         if (list != null) {
             list.forEach(detailJadwalPengajaran -> detailJadwalPengajaranList.add(DetailJadwalPengajaranPojo.builder()
                     .id(EncryptionUtil.encrypt(detailJadwalPengajaran.getId()))
                     .hari(detailJadwalPengajaran.getHari())
-                    .idPengajar(EncryptionUtil.encrypt(detailJadwalPengajaran.getIdPengajar()))
-                    .namaPengajar(detailJadwalPengajaran.getNamaPengajar())
+                    .idPengajar(EncryptionUtil.encrypt(detailJadwalPengajaran.getPengajar().getId()))
+                    .namaPengajar(detailJadwalPengajaran.getPengajar().getNamaLengkap())
                     .mataPelajaran(detailJadwalPengajaran.getMataPelajaran())
                     .jamMulai(detailJadwalPengajaran.getJamMulai())
                     .jamSelesai(detailJadwalPengajaran.getJamSelesai())

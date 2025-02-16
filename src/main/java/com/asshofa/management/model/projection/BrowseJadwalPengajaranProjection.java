@@ -1,13 +1,15 @@
 package com.asshofa.management.model.projection;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public interface DetailJadwalPengajaranProjection {
+public interface BrowseJadwalPengajaranProjection {
     Short getId();
-    String getMataPelajaran();
     String getHari();
     LocalTime getJamMulai();
     LocalTime getJamSelesai();
+    String getMataPelajaran();
     Short getIdPengajar();
     String getNamaPengajar();
+    LocalDateTime getCreatedAt();
 }
