@@ -47,10 +47,10 @@ public class WaliSantriServiceImpl implements WaliSantriService {
         try {
             new CheckRole(headerHolder).checkRoleCRD();
 
-            rekam.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-
             WaliSantri newWaliSantri = new WaliSantri();
+            newWaliSantri.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
             WaliSantri waliSantri = waliSantriRepository.save(toEntity(rekam, newWaliSantri));
+
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, toPojoDetailWaliSantri(waliSantri), loggingHolder);
         } catch (Exception e) {
             logger.error("error when creating rekam wali santri", e);
@@ -63,10 +63,9 @@ public class WaliSantriServiceImpl implements WaliSantriService {
         try {
             new CheckRole(headerHolder).checkRoleCRD();
 
-            rekam.setUpdatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-
             Optional<WaliSantri> waliSantri = waliSantriRepository.findById(EncryptionUtil.decrypt(id));
             if (!waliSantri.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
+            waliSantri.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
 
             WaliSantri updateWaliSantri = waliSantriRepository.save(toEntity(rekam, waliSantri.get()));
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_UPDATED, toPojoDetailWaliSantri(updateWaliSantri), loggingHolder);
@@ -115,7 +114,7 @@ public class WaliSantriServiceImpl implements WaliSantriService {
     @Override
     public DataResponse<DetailWaliSantriPojo> getDetailWaliSantri(String id) {
         try {
-            new CheckRole(headerHolder).checkRoleDetailWaliSantri();
+            new CheckRole(headerHolder).checkRoleAdminAndPengajar();
 
             Optional<WaliSantri> waliSantri = waliSantriRepository.findById(EncryptionUtil.decrypt(id));
             if (!waliSantri.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
@@ -132,8 +131,6 @@ public class WaliSantriServiceImpl implements WaliSantriService {
         destination.setNoTelepon(source.getNoTelepon());
         destination.setAlamat(source.getAlamat());
         destination.setHubunganDenganSantri(source.getHubunganDenganSantri());
-        destination.setCreatedAt(source.getCreatedAt());
-        destination.setUpdatedAt(source.getUpdatedAt());
 
         return destination;
     }

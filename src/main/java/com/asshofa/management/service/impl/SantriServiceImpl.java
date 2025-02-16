@@ -47,7 +47,7 @@ public class SantriServiceImpl implements SantriService {
     @Override
     public DatatableResponse<BrowseSantriPojo> browseSantri(BrowseSantriParam param) {
         try {
-            new CheckRole(headerHolder).checkRoleBrowseSantri();
+            new CheckRole(headerHolder).checkRoles();
 
             int page = param.getPage() - 1;
             int limit = param.getLimit();
@@ -66,7 +66,7 @@ public class SantriServiceImpl implements SantriService {
     @Override
     public DataResponse<DetailSantriPojo> getDetailSantri(String id) {
         try {
-            new CheckRole(headerHolder).checkRoleDetailWaliSantri();
+            new CheckRole(headerHolder).checkRoleAdminAndPengajar();
 
             Optional<Santri> santri = santriRepository.findById(EncryptionUtil.decrypt(id));
             if (!santri.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
@@ -83,13 +83,12 @@ public class SantriServiceImpl implements SantriService {
         try {
             new CheckRole(headerHolder).checkRoleCRD();
 
-            rekam.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-
             Optional<WaliSantri> waliSantri = waliSantriRepository.findById(EncryptionUtil.decrypt(rekam.getIdWali()));
             if (!waliSantri.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
 
             Santri newSantri = new Santri();
             newSantri.setWaliSantri(waliSantri.get());
+            newSantri.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
             Santri santri = santriRepository.save(toEntity(rekam, newSantri));
 
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, toPojoDetailSantri(santri), loggingHolder);
@@ -104,8 +103,6 @@ public class SantriServiceImpl implements SantriService {
         try {
             new CheckRole(headerHolder).checkRoleCRD();
 
-            rekam.setUpdatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-
             Optional<Santri> santri = santriRepository.findById(EncryptionUtil.decrypt(id));
             if (!santri.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
 
@@ -113,6 +110,7 @@ public class SantriServiceImpl implements SantriService {
             if (!waliSantri.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
 
             santri.get().setWaliSantri(waliSantri.get());
+            santri.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
             Santri updateSantri = santriRepository.save(toEntity(rekam, santri.get()));
 
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_UPDATED, toPojoDetailSantri(updateSantri), loggingHolder);
@@ -180,8 +178,6 @@ public class SantriServiceImpl implements SantriService {
         destination.setAlamat(source.getAlamat());
         destination.setJenisKelamin(source.getJenisKelamin());
         destination.setWaliSantri(destination.getWaliSantri());
-        destination.setCreatedAt(source.getCreatedAt());
-        destination.setUpdatedAt(source.getUpdatedAt());
 
         return destination;
     }

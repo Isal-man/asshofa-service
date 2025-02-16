@@ -25,7 +25,7 @@ public class CheckRole {
         aksesRole(roles);
     }
 
-    public void checkRoleDetailWaliSantri() {
+    public void checkRoleAdminAndPengajar() {
         List<String> roles = Arrays.asList(
                 Constant.ADMIN,
                 Constant.PENGAJAR
@@ -34,7 +34,7 @@ public class CheckRole {
         aksesRole(roles);
     }
 
-    public void checkRoleBrowseSantri() {
+    public void checkRoles() {
         List<String> roles = Arrays.asList(
                 Constant.ADMIN,
                 Constant.PENGAJAR,
