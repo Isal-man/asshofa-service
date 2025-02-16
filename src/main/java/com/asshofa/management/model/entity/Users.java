@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "users", schema = "asshofa_management")
+@Table(name = "users")
 public class Users {
 
     @Id
