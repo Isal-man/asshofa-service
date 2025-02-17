@@ -22,7 +22,7 @@ public class SwaggerConfig {
                         .title("Asshofa Management Service")
                         .description("RESTful API For Asshofa Management")
                         .version("v0.0.1")
-                        .license(new License().name("For Internal Use Only").url("http://asshofa.sch"))
+                        .license(new License().name("For Internal Use Only").url("https://asshofa.sch"))
                 )
                 .externalDocs(new ExternalDocumentation()
                         .description("Spring Boot Documentation")
