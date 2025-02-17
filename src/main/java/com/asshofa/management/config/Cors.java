@@ -17,7 +17,8 @@ public class Cors {
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowedOriginPatterns("*")
-                        .allowedOrigins("*");
+                        .allowedOrigins("*")
+                        .allowCredentials(true);
             }
         };
     }
