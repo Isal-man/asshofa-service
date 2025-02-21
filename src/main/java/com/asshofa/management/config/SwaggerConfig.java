@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+import java.util.Collections;
 
 @Configuration
 public class SwaggerConfig {
@@ -35,7 +35,7 @@ public class SwaggerConfig {
                         .description("Spring Boot Documentation")
                         .url("https://bit.ly/4cFhdZi")
                 )
-                .servers(List.of(
+                .servers(Collections.singletonList(
                         new Server().url(url)
                                 .description("Production server")
                 ))

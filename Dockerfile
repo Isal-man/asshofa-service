@@ -1,4 +1,4 @@
-FROM openjdk:9-jdk-alpine
+FROM openjdk:8-jdk-alpine
 
 # Set working directory di dalam container
 WORKDIR /app
