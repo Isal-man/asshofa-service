@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/dashboard")
+@RequestMapping("/dashboard-view")
 @Tag(name = "Dashboard Service", description = "API Collections for Dashboard")
 public class DashboardController {
 
