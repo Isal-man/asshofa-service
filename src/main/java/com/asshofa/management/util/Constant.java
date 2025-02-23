@@ -12,5 +12,6 @@ public final class Constant {
     public static final String PENGAJAR = "PENGAJAR";
     public static final String WALI_SANTRI = "WALI SANTRI";
     public static final String SANTRI = "SANTRI";
+    public static final String USER = "USER";
     public static final String DEFAULT_IMAGE = "https://res.cloudinary.com/do58pnzwn/image/upload/v1739704236/samples/cloudinary-icon.png";
 }
