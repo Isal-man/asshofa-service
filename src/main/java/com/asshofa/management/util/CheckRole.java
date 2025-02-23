@@ -39,7 +39,8 @@ public class CheckRole {
                 Constant.ADMIN,
                 Constant.PENGAJAR,
                 Constant.WALI_SANTRI,
-                Constant.SANTRI
+                Constant.SANTRI,
+                Constant.USER
         );
 
         aksesRole(roles);

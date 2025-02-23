@@ -44,7 +44,7 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public DataResponse<DashboardPojo> getDashboard() {
         try {
-            new CheckRole(headerHolder).checkRoleAdminAndPengajar();
+            new CheckRole(headerHolder).checkRoles();
 
             DashboardPojo dashboardPojo = DashboardPojo.builder()
                     .distribusiNilaiSantri(toDistribusiNilaiSantri())

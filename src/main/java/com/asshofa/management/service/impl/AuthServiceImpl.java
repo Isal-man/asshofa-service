@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
             Users user = new Users();
             user.setUsername(register.getUsername());
             user.setPassword(PasswordUtil.encode(register.getPassword()));
-            user.setRole(register.getRole());
+            user.setRole("USER");
             user.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
 
             if (register.getGambar() == null) {
