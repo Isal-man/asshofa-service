@@ -34,10 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<JwtResponse> refreshToken(@RequestHeader("Authorization") String refreshToken) {
-        if (refreshToken != null && refreshToken.startsWith("Bearer ")) {
-            refreshToken = refreshToken.substring(7);
-        }
+    public ResponseEntity<JwtResponse> refreshToken(@RequestParam("token") String refreshToken) {
         JwtResponse newToken = authService.refreshToken(refreshToken);
         return ResponseEntity.ok(newToken);
     }
