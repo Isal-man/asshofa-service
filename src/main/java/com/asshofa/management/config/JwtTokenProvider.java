@@ -1,5 +1,6 @@
 package com.asshofa.management.config;
 
+import com.asshofa.management.exception.custom.NotFoundException;
 import com.asshofa.management.model.entity.Users;
 import com.asshofa.management.repository.UsersRepository;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -30,13 +32,14 @@ public class JwtTokenProvider {
 
     public String generateToken(String username) {
         try {
-            Users users = usersRepository.findByUsername(username);
+            Optional<Users> users = usersRepository.findByUsername(username);
+            if (!users.isPresent()) throw new NotFoundException("user not found");
             Map<String, Object> claims = new HashMap<>();
-            claims.put("username", users.getUsername());
-            claims.put("role", users.getRole());
-            claims.put("gambar", users.getGambar());
-            claims.put("createdAt", users.getCreatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            claims.put("updatedAt", users.getUpdatedAt() != null ? users.getUpdatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : null);
+            claims.put("username", users.get().getUsername());
+            claims.put("role", users.get().getRole());
+            claims.put("gambar", users.get().getGambar());
+            claims.put("createdAt", users.get().getCreatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            claims.put("updatedAt", users.get().getUpdatedAt() != null ? users.get().getUpdatedAt().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) : null);
 
             return Jwts.builder()
                     .setClaims(claims)
