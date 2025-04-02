@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .map(users -> User.builder()
                         .username(users.getUsername())
                         .password(users.getPassword())
-                        .roles("ROLE_" + users.getRole().toUpperCase()) // Tambahkan ROLE_
+                        .roles(users.getRole().toUpperCase())
                         .build()
                 ).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
