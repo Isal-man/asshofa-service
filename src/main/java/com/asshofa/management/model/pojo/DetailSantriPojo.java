@@ -18,7 +18,9 @@ public class DetailSantriPojo {
     private LocalDate tanggalLahir;
     private String jenisKelamin;
     private String alamat;
+    private String gambar;
     private String idWali;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String namaWali;
+    private String gambarWali;
 }

@@ -29,11 +29,11 @@ public interface SantriRepository extends JpaRepository<Santri, Short> {
             "    ws.nama_lengkap as namaWali \n" +
             "from asshofa_management.santri s \n" +
             "join asshofa_management.wali_santri ws on s.id_wali = ws.id " +
-            "where (:#{#param.nama} is null or upper(cast(:#{#param.nama} as text)) = upper(s.nama_lengkap)) " +
-            "and (:#{#param.tempatLahir} is null or upper(cast(:#{#param.tempatLahir} as text)) = upper(tempat_lahir)) " +
-            "and (:#{#param.tanggalLahir} is null or s.tanggal_lahir = :#{#param.tanggalLahir}) " +
-            "and (:#{#param.jenisKelamin} is null or upper(cast(:#{#param.jenisKelamin} as text)) = upper(jenis_kelamin)) " +
-            "and (:#{#param.namaWali} is null or upper(cast(:#{#param.namaWali} as text)) = upper(ws.nama_lengkap)) ", nativeQuery = true)
+            "where (cast(:#{#param.nama} as text) is null or upper(cast(:#{#param.nama} as text)) = upper(s.nama_lengkap)) " +
+            "and (cast(:#{#param.tempatLahir} as text) is null or upper(cast(:#{#param.tempatLahir} as text)) = upper(tempat_lahir)) " +
+            "and (cast(:#{#param.tanggalLahir} as text) is null or s.tanggal_lahir = cast(cast(:#{#param.tanggalLahir} as text) as date)) " +
+            "and (cast(:#{#param.jenisKelamin} as text) is null or upper(cast(:#{#param.jenisKelamin} as text)) = upper(jenis_kelamin)) " +
+            "and (cast(:#{#param.namaWali} as text) is null or upper(cast(:#{#param.namaWali} as text)) = upper(ws.nama_lengkap)) ", nativeQuery = true)
     Page<BrowseSantriProjection> browseSantri(BrowseSantriParam param, Pageable pageable);
 
     Integer countByJenisKelaminIgnoreCase(String jenisKelamin);
@@ -54,4 +54,7 @@ public interface SantriRepository extends JpaRepository<Santri, Short> {
             "group by bulan \n" +
             "order by bulan ", nativeQuery = true)
     List<TrenPendaftaranProjection> getTrenPendaftaran();
+
+    @Query("select distinct tempatLahir from Santri")
+    List<String> getAllTempatLahir();
 }

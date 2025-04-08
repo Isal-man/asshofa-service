@@ -1,6 +1,7 @@
 package com.asshofa.management.service.impl;
 
 import com.asshofa.management.exception.custom.NotFoundException;
+import com.asshofa.management.model.entity.ReferensiKota;
 import com.asshofa.management.model.entity.Santri;
 import com.asshofa.management.model.entity.WaliSantri;
 import com.asshofa.management.model.param.BrowseSantriParam;
@@ -9,6 +10,7 @@ import com.asshofa.management.model.pojo.DetailSantriPojo;
 import com.asshofa.management.model.pojo.RekamSantriPojo;
 import com.asshofa.management.model.projection.BrowseSantriProjection;
 import com.asshofa.management.model.response.*;
+import com.asshofa.management.repository.ReferensiKotaRepository;
 import com.asshofa.management.repository.SantriRepository;
 import com.asshofa.management.repository.WaliSantriRepository;
 import com.asshofa.management.service.SantriService;
@@ -27,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +41,7 @@ public class SantriServiceImpl implements SantriService {
 
     private final SantriRepository santriRepository;
     private final WaliSantriRepository waliSantriRepository;
+    private final ReferensiKotaRepository referensiKotaRepository;
     private final LoggingHolder loggingHolder;
     private final HeaderHolder headerHolder;
 
@@ -53,6 +57,8 @@ public class SantriServiceImpl implements SantriService {
             int limit = param.getLimit();
             Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
             Pageable pageable = PageRequest.of(page, limit, sort);
+
+            logger.info("tanggal lahir: {}", param.getTanggalLahir());
 
             Page<BrowseSantriProjection> result = santriRepository.browseSantri(param, pageable);
 
@@ -79,6 +85,7 @@ public class SantriServiceImpl implements SantriService {
     }
 
     @Override
+    @Transactional
     public DataResponse<DetailSantriPojo> create(RekamSantriPojo rekam) {
         try {
             new CheckRole(headerHolder).checkRoleCRD();
@@ -90,6 +97,14 @@ public class SantriServiceImpl implements SantriService {
             newSantri.setWaliSantri(waliSantri.get());
             newSantri.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
             newSantri.setGambar(rekam.getGambar() != null ? rekam.getGambar() : Constant.DEFAULT_IMAGE);
+
+            List<ReferensiKota> referensiKota = referensiKotaRepository.findByNamaKotaContainingIgnoreCase(rekam.getTempatLahir());
+            if (referensiKota.isEmpty()) {
+                referensiKotaRepository.truncateTable();
+                List<String> tempatLahirSantri = santriRepository.getAllTempatLahir();
+                List<ReferensiKota> referensiKotas = toListReferensiKota(tempatLahirSantri);
+                referensiKotaRepository.saveAll(referensiKotas);
+            }
 
             Santri santri = santriRepository.save(toEntity(rekam, newSantri));
 
@@ -114,6 +129,14 @@ public class SantriServiceImpl implements SantriService {
             santri.get().setWaliSantri(waliSantri.get());
             santri.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
             santri.get().setGambar(rekam.getGambar() != null ? rekam.getGambar() : santri.get().getGambar());
+
+            List<ReferensiKota> referensiKota = referensiKotaRepository.findByNamaKotaContainingIgnoreCase(rekam.getTempatLahir());
+            if (referensiKota.isEmpty()) {
+                referensiKotaRepository.truncateTable();
+                List<String> tempatLahirSantri = santriRepository.getAllTempatLahir();
+                List<ReferensiKota> referensiKotas = toListReferensiKota(tempatLahirSantri);
+                referensiKotaRepository.saveAll(referensiKotas);
+            }
 
             Santri updateSantri = santriRepository.save(toEntity(rekam, santri.get()));
 
@@ -170,8 +193,10 @@ public class SantriServiceImpl implements SantriService {
                 .tanggalLahir(santri.getTanggalLahir())
                 .jenisKelamin(santri.getJenisKelamin())
                 .alamat(santri.getAlamat())
+                .gambar(santri.getGambar())
                 .idWali(EncryptionUtil.encrypt(santri.getWaliSantri().getId()))
                 .namaWali(santri.getWaliSantri().getNamaLengkap())
+                .gambarWali(santri.getWaliSantri().getGambar())
                 .build();
     }
 
@@ -184,6 +209,18 @@ public class SantriServiceImpl implements SantriService {
         destination.setWaliSantri(destination.getWaliSantri());
 
         return destination;
+    }
+
+    private List<ReferensiKota> toListReferensiKota(List<String> tempatLahirSantri) {
+        return tempatLahirSantri.stream()
+                .map(this::toEntityReferensiKota)
+                .collect(Collectors.toList());
+    }
+
+    private ReferensiKota toEntityReferensiKota(String namaKota) {
+        ReferensiKota referensiKota = new ReferensiKota();
+        referensiKota.setNamaKota(namaKota);
+        return referensiKota;
     }
 
 }

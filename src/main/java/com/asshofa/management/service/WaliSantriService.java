@@ -14,4 +14,5 @@ public interface WaliSantriService {
     DefaultResponse delete(String id);
     DatatableResponse<BrowseWaliSantriPojo> browseWaliSantri(BrowseWaliSantriParam param);
     DataResponse<DetailWaliSantriPojo> getDetailWaliSantri(String id);
+    DataResponse<DetailWaliSantriPojo> getDetailWaliSantriByName(String name);
 }

@@ -129,6 +129,21 @@ public class WaliSantriServiceImpl implements WaliSantriService {
         }
     }
 
+    @Override
+    public DataResponse<DetailWaliSantriPojo> getDetailWaliSantriByName(String name) {
+        try {
+            new CheckRole(headerHolder).checkRoleAdminAndPengajar();
+
+            Optional<WaliSantri> waliSantri = waliSantriRepository.findFirstByNamaLengkapEqualsIgnoreCase(name);
+            if (!waliSantri.isPresent()) throw new NotFoundException(ResponseMessage.DATA_NOT_FOUND);
+
+            return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_FETCHED, toPojoDetailWaliSantri(waliSantri.get()), loggingHolder);
+        } catch (Exception e) {
+            logger.error("error when get detail wali santri", e);
+            throw e;
+        }
+    }
+
     private WaliSantri toEntity(RekamWaliSantriPojo source, WaliSantri destination) {
         destination.setNamaLengkap(source.getNamaLengkap());
         destination.setNoTelepon(source.getNoTelepon());
@@ -163,11 +178,11 @@ public class WaliSantriServiceImpl implements WaliSantriService {
                 .noTelepon(waliSantri.getNoTelepon())
                 .alamat(waliSantri.getAlamat())
                 .hubunganDenganSantri(waliSantri.getHubunganDenganSantri())
-                .santriList(toPojoDetailSantri(santriList))
+                .santriList(toPojoDetailSantri(santriList, waliSantri.getGambar()))
                 .build();
     }
 
-    private List<DetailSantriPojo> toPojoDetailSantri(List<Santri> santriList) {
+    private List<DetailSantriPojo> toPojoDetailSantri(List<Santri> santriList, String gambar) {
         List<DetailSantriPojo> detailSantriPojoList = new ArrayList<>();
 
         if (!santriList.isEmpty()) {
@@ -181,6 +196,8 @@ public class WaliSantriServiceImpl implements WaliSantriService {
                             .namaWali(santri.getWaliSantri().getNamaLengkap())
                             .alamat(santri.getAlamat())
                             .jenisKelamin(santri.getJenisKelamin())
+                            .gambarWali(gambar)
+                            .gambar(santri.getGambar())
                             .build()
             ));
         }

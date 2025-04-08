@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface WaliSantriRepository extends JpaRepository<WaliSantri, Short> {
 
     @Query(value = "select id as id, " +
@@ -20,5 +22,5 @@ public interface WaliSantriRepository extends JpaRepository<WaliSantri, Short> {
             "and (:#{#param.noTelepon} is null or cast(:#{#param.noTelepon} as text) = no_telepon) ", nativeQuery = true)
     Page<BrowseWaliSantriProjection> browseWaliSantri(BrowseWaliSantriParam param, Pageable pageable);
 
-
+    Optional<WaliSantri> findFirstByNamaLengkapEqualsIgnoreCase(String namaLengkap);
 }

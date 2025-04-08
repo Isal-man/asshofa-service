@@ -34,6 +34,16 @@ public class WaliSantriController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping
+    @Operation(
+            summary = "Get Wali Santri By Name",
+            description = "Mengambil data wali santri berdasarkan nama lengkap"
+    )
+    public ResponseEntity<DataResponse<DetailWaliSantriPojo>> getDetailWaliSantriByNamePojo(@RequestParam("name") String name) {
+        DataResponse<DetailWaliSantriPojo> response = waliSantriService.getDetailWaliSantriByName(name);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{id}")
     @Operation(
             summary = "Get Wali Santri By ID",

@@ -76,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
             return jwtTokenProvider.validateToken(token);
         } catch (Exception e) {
             logger.error("error when validate token", e);
-            throw e;
+            return false;
         }
     }
 
@@ -93,16 +93,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtResponse refreshToken(String token) {
         try {
-            if (Boolean.TRUE.equals(validateToken(token))) {
+            if (!jwtTokenProvider.isTokenExpired(token)) {
                 String username = getUsernameFromToken(token);
                 String newToken = jwtTokenProvider.generateToken(username);
                 return new JwtResponse(newToken);
             } else {
-                throw new DataIntegrityViolationException("token not valid");
+                throw new DataIntegrityViolationException("Token is expired");
             }
         } catch (Exception e) {
-            logger.error("error when refresh token", e);
+            logger.error("Error when refreshing token", e);
             throw e;
         }
     }
+
 }

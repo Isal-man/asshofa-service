@@ -3,6 +3,8 @@ package com.asshofa.management.config;
 import com.asshofa.management.exception.custom.NotFoundException;
 import com.asshofa.management.model.entity.Users;
 import com.asshofa.management.repository.UsersRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -73,8 +75,28 @@ public class JwtTokenProvider {
             return true;
         } catch (Exception e) {
             logger.error("error when validate token.", e);
-            throw e;
+            return false;
         }
+    }
+
+    public boolean isTokenExpired(String token) {
+        try {
+            Claims claims = getClaimsFromToken(token);
+            Date expirationTime = claims.getExpiration();
+            return expirationTime.before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (Exception e) {
+            logger.error("Error checking token expiration", e);
+            return true;
+        }
+    }
+
+    private Claims getClaimsFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
 }
