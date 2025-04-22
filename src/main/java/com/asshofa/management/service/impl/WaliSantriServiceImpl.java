@@ -50,8 +50,8 @@ public class WaliSantriServiceImpl implements WaliSantriService {
 
             WaliSantri newWaliSantri = new WaliSantri();
             newWaliSantri.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
+            newWaliSantri.setGambar(rekam.getGambar() != null ? rekam.getGambar() : Constant.DEFAULT_IMAGE);
             WaliSantri waliSantri = waliSantriRepository.save(toEntity(rekam, newWaliSantri));
-            waliSantri.setGambar(rekam.getGambar() != null ? rekam.getGambar() : Constant.DEFAULT_IMAGE);
 
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, toPojoDetailWaliSantri(waliSantri), loggingHolder);
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public class WaliSantriServiceImpl implements WaliSantriService {
 
             Page<BrowseWaliSantriProjection> browseWaliSantriProjections = waliSantriRepository.browseWaliSantri(param, pageable);
 
-            return toDatatableWaliSantri(browseWaliSantriProjections, page);
+            return toDatatableWaliSantri(browseWaliSantriProjections, param.getPage());
         } catch (Exception e) {
             logger.error("error when browse wali santri", e);
             throw e;
@@ -179,6 +179,7 @@ public class WaliSantriServiceImpl implements WaliSantriService {
                 .alamat(waliSantri.getAlamat())
                 .hubunganDenganSantri(waliSantri.getHubunganDenganSantri())
                 .santriList(toPojoDetailSantri(santriList, waliSantri.getGambar()))
+                .gambar(waliSantri.getGambar())
                 .build();
     }
 

@@ -8,6 +8,7 @@ import lombok.Setter;
 public class BrowseWaliSantriParam {
     private String namaLengkap;
     private String noTelepon;
+    private String hubunganDenganSantri;
     private Integer page;
     private Integer limit;
 }

@@ -19,7 +19,8 @@ public interface WaliSantriRepository extends JpaRepository<WaliSantri, Short> {
             "created_at as createdAt " +
             "from asshofa_management.wali_santri " +
             "where (:#{#param.namaLengkap} is null or upper(cast(:#{#param.namaLengkap} as text)) = upper(nama_lengkap)) " +
-            "and (:#{#param.noTelepon} is null or cast(:#{#param.noTelepon} as text) = no_telepon) ", nativeQuery = true)
+            "and (:#{#param.noTelepon} is null or cast(:#{#param.noTelepon} as text) = no_telepon) " +
+            "and (:#{#param.hubunganDenganSantri} is null or upper(cast(:#{#param.hubunganDenganSantri} as text)) = upper(hubungan_dengan_santri))", nativeQuery = true)
     Page<BrowseWaliSantriProjection> browseWaliSantri(BrowseWaliSantriParam param, Pageable pageable);
 
     Optional<WaliSantri> findFirstByNamaLengkapEqualsIgnoreCase(String namaLengkap);

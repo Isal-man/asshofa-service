@@ -17,5 +17,6 @@ public class DetailWaliSantriPojo {
     private String noTelepon;
     private String alamat;
     private String hubunganDenganSantri;
+    private String gambar;
     private List<DetailSantriPojo> santriList;
 }
