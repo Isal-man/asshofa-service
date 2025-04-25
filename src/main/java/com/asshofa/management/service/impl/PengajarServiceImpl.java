@@ -56,7 +56,7 @@ public class PengajarServiceImpl implements PengajarService {
 
             Page<BrowsePengajarProjection> result = pengajarRepository.browsePengajar(param, pageable);
 
-            return toDatatablePengajar(result, page);
+            return toDatatablePengajar(result, param.getPage());
         } catch (Exception e) {
             logger.error("error when browse pengajar", e);
             throw e;
@@ -158,6 +158,7 @@ public class PengajarServiceImpl implements PengajarService {
                 .jadwalPengajaranList(toPojoDetailJadwalPengajaran(jadwalPengajaranList))
                 .noTelepon(pengajar.getNoTelepon())
                 .spesialisasi(pengajar.getSpesialisasi())
+                .gambar(pengajar.getGambar())
                 .build();
     }
 

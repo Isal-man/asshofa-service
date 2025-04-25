@@ -15,5 +15,6 @@ public class DetailPengajarPojo {
     private String noTelepon;
     private String alamat;
     private String spesialisasi;
+    private String gambar;
     private List<DetailJadwalPengajaranPojo> jadwalPengajaranList;
 }

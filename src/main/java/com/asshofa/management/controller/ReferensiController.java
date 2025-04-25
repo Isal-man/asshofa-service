@@ -1,9 +1,11 @@
 package com.asshofa.management.controller;
 
 import com.asshofa.management.model.entity.ReferensiKota;
+import com.asshofa.management.model.entity.ReferensiSpesialisasi;
 import com.asshofa.management.model.entity.ReferensiWaliSantri;
 import com.asshofa.management.model.response.DataResponse;
 import com.asshofa.management.service.ReferensiKotaService;
+import com.asshofa.management.service.ReferensiSpesialisasiService;
 import com.asshofa.management.service.ReferensiWaliSantriService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +26,7 @@ public class ReferensiController {
 
     private final ReferensiKotaService referensiKotaService;
     private final ReferensiWaliSantriService referensiWaliSantriService;
+    private final ReferensiSpesialisasiService referensiSpesialisasiService;
 
     @GetMapping("/kota")
     @Operation(
@@ -41,6 +44,15 @@ public class ReferensiController {
     )
     public ResponseEntity<DataResponse<List<ReferensiWaliSantri>>> getDataReferensiWaliSantri() {
         return ResponseEntity.ok(referensiWaliSantriService.getDataRefWaliSantri());
+    }
+
+    @GetMapping("/spesialisasi")
+    @Operation(
+            summary = "Get all referensi spesialisasi",
+            description = "Mendapatkan semua data referensi spesialisasi"
+    )
+    public ResponseEntity<DataResponse<List<ReferensiSpesialisasi>>> getDataReferensiSpesialisasi() {
+        return ResponseEntity.ok(referensiSpesialisasiService.getDataReferensiSpesialisasi());
     }
 
 }
