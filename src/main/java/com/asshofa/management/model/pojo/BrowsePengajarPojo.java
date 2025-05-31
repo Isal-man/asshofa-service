@@ -12,4 +12,5 @@ public class BrowsePengajarPojo {
     private String namaLengkap;
     private String noTelepon;
     private String spesialisasi;
+    private String gambar;
 }

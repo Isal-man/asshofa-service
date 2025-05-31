@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,4 +18,6 @@ public class DetailJadwalPengajaranPojo {
     private String mataPelajaran;
     private String idPengajar;
     private String namaPengajar;
+    private String gambarPengajar;
+    private List<DetailNilaiSantriPojo> nilaiSantriList;
 }

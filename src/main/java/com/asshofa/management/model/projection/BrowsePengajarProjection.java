@@ -7,5 +7,6 @@ public interface BrowsePengajarProjection {
     String getNamaLengkap();
     String getNoTelepon();
     String getSpesialisasi();
+    String getGambar();
     LocalDateTime getCreatedAt();
 }

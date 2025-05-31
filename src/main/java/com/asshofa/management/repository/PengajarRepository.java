@@ -14,6 +14,7 @@ public interface PengajarRepository extends JpaRepository<Pengajar, Short> {
             "    nama_lengkap as namaLengkap, \n" +
             "    no_telepon as noTelepon, \n" +
             "    spesialisasi as spesialisasi, \n" +
+            "    gambar as gambar," +
             "    created_at as createdAt \n " +
             "from asshofa_management.pengajar \n" +
             "where (:#{#param.namaLengkap} is null or upper(cast(:#{#param.namaLengkap} as text)) = upper(nama_lengkap)) \n" +

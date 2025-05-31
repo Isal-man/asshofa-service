@@ -35,6 +35,16 @@ public interface SantriRepository extends JpaRepository<Santri, Short> {
             "and (cast(:#{#param.jenisKelamin} as text) is null or upper(cast(:#{#param.jenisKelamin} as text)) = upper(jenis_kelamin)) " +
             "and (cast(:#{#param.namaWali} as text) is null or upper(cast(:#{#param.namaWali} as text)) = upper(ws.nama_lengkap)) ", nativeQuery = true)
     Page<BrowseSantriProjection> browseSantri(BrowseSantriParam param, Pageable pageable);
+    
+    @Query(value = "select\n" +
+            "    s.id as id,\n" +
+            "    s.nama_lengkap as namaLengkap,\n" +
+            "   s.created_at as createdAt\n" +
+            "from santri s\n" +
+            "left join nilai_santri ns on s.id = ns.id_santri\n" +
+            "left join jadwal_pengajaran jp on ns.id_jadwal = jp.id\n" +
+            "where jp.id = :idJadwalPengajaran", nativeQuery = true)
+    Page<BrowseSantriProjection> browseSantriByIdJadwalPengajaran(Short idJadwalPengajaran, Pageable pageable);
 
     Integer countByJenisKelaminIgnoreCase(String jenisKelamin);
 

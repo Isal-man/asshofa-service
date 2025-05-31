@@ -145,6 +145,7 @@ public class PengajarServiceImpl implements PengajarService {
                 .namaLengkap(data.getNamaLengkap())
                 .spesialisasi(data.getSpesialisasi())
                 .noTelepon(data.getNoTelepon())
+                .gambar(data.getGambar())
                 .build();
     }
 

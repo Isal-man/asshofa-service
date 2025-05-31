@@ -58,9 +58,7 @@ public class SantriServiceImpl implements SantriService {
             Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
             Pageable pageable = PageRequest.of(page, limit, sort);
 
-            logger.info("tanggal lahir: {}", param.getTanggalLahir());
-
-            Page<BrowseSantriProjection> result = santriRepository.browseSantri(param, pageable);
+            Page<BrowseSantriProjection> result = param.getIdJadwalPengajaran() != null ? santriRepository.browseSantriByIdJadwalPengajaran(EncryptionUtil.decrypt(param.getIdJadwalPengajaran()), pageable) :santriRepository.browseSantri(param, pageable);
 
             return toDatatableSantri(result, page);
         } catch (Exception e) {

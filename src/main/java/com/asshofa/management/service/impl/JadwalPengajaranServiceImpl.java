@@ -6,10 +6,13 @@ import com.asshofa.management.model.entity.Pengajar;
 import com.asshofa.management.model.param.BrowseJadwalPengajaranParam;
 import com.asshofa.management.model.pojo.BrowseJadwalPengajaranPojo;
 import com.asshofa.management.model.pojo.DetailJadwalPengajaranPojo;
+import com.asshofa.management.model.pojo.DetailNilaiSantriPojo;
 import com.asshofa.management.model.pojo.RekamJadwalPengajaranPojo;
 import com.asshofa.management.model.projection.BrowseJadwalPengajaranProjection;
+import com.asshofa.management.model.projection.DetailNilaiSantriProjection;
 import com.asshofa.management.model.response.*;
 import com.asshofa.management.repository.JadwalPengajaranRepository;
+import com.asshofa.management.repository.NilaiSantriRepository;
 import com.asshofa.management.repository.PengajarRepository;
 import com.asshofa.management.service.JadwalPengajaranService;
 import com.asshofa.management.util.CheckRole;
@@ -28,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +42,7 @@ public class JadwalPengajaranServiceImpl implements JadwalPengajaranService {
 
     private final JadwalPengajaranRepository jadwalPengajaranRepository;
     private final PengajarRepository pengajarRepository;
+    private final NilaiSantriRepository nilaiSantriRepository;
     private final LoggingHolder loggingHolder;
     private final HeaderHolder headerHolder;
 
@@ -56,7 +61,7 @@ public class JadwalPengajaranServiceImpl implements JadwalPengajaranService {
 
             Page<BrowseJadwalPengajaranProjection> result = jadwalPengajaranRepository.browseJadwalPengajaran(param, pageable);
 
-            return toDatatableJadwalPengajaran(result, page);
+            return toDatatableJadwalPengajaran(result, param.getPage());
         } catch (Exception e) {
             logger.error("error when browse jadwal pengajaran.", e);
             throw e;
@@ -159,15 +164,33 @@ public class JadwalPengajaranServiceImpl implements JadwalPengajaranService {
     }
 
     private DetailJadwalPengajaranPojo toPojoDetailJadwalPengajaran(JadwalPengajaran jadwalPengajaran) {
+        List<DetailNilaiSantriProjection> listNilai = nilaiSantriRepository.getDetailNilaiSantri(null, jadwalPengajaran.getId());
+
         return DetailJadwalPengajaranPojo.builder()
                 .id(EncryptionUtil.encrypt(jadwalPengajaran.getId()))
                 .hari(jadwalPengajaran.getHari())
                 .idPengajar(EncryptionUtil.encrypt(jadwalPengajaran.getPengajar().getId()))
                 .namaPengajar(jadwalPengajaran.getPengajar().getNamaLengkap())
+                .gambarPengajar(jadwalPengajaran.getPengajar().getGambar())
                 .mataPelajaran(jadwalPengajaran.getMataPelajaran())
                 .jamMulai(jadwalPengajaran.getJamMulai())
                 .jamSelesai(jadwalPengajaran.getJamSelesai())
+                .nilaiSantriList(toPojoNilaiSantri(listNilai))
                 .build();
+    }
+
+    private List<DetailNilaiSantriPojo> toPojoNilaiSantri(List<DetailNilaiSantriProjection> listNilai) {
+        List<DetailNilaiSantriPojo> detailNilaiSantriPojo = new ArrayList<>();
+        listNilai.forEach(data -> detailNilaiSantriPojo.add(DetailNilaiSantriPojo.builder()
+                        .id(EncryptionUtil.encrypt(data.getId()))
+                        .nilai(data.getNilai())
+                        .idSantri(EncryptionUtil.encrypt(data.getIdSantri()))
+                        .keterangan(data.getKeterangan())
+                        .namaSantri(data.getNamaSantri())
+                        .tanggalPenilaian(data.getTanggalPenilaian())
+                .build()));
+
+        return detailNilaiSantriPojo;
     }
 
     private JadwalPengajaran toEntity(RekamJadwalPengajaranPojo rekam, JadwalPengajaran jadwalPengajaran) {

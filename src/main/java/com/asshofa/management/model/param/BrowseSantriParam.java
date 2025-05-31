@@ -13,6 +13,7 @@ public class BrowseSantriParam {
     private String tempatLahir;
     private Date tanggalLahir;
     private String jenisKelamin;
+    private String idJadwalPengajaran;
     private Integer page;
     private Integer limit;
 }

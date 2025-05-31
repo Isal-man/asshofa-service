@@ -20,7 +20,6 @@ public class RekamNilaiSantriPojo {
     private Integer nilai;
     @NotNull(message = "Tanggal penilaian tidak boleh kosong!")
     private LocalDate tanggalPenilaian;
-    private LocalDate tanggalPenilaianUpdate;
     @NotBlank(message = "Santri tidak boleh kosong")
     private String idSantri;
     @NotBlank(message = "Mata pelajaran tidak boleh kosong")
