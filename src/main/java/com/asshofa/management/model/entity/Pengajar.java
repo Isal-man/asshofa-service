@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Pengajar {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "smallserial")
     private Short id;
 

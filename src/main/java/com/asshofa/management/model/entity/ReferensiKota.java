@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "referensi_kota")
 public class ReferensiKota {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", columnDefinition = "smallserial", nullable = false)
     private Short id;
     @Column(name = "NAMA_KOTA", nullable = false, length = 100)

@@ -114,6 +114,7 @@ public class SantriServiceImpl implements SantriService {
     }
 
     @Override
+    @Transactional
     public DataResponse<DetailSantriPojo> update(RekamSantriPojo rekam, String id) {
         try {
             new CheckRole(headerHolder).checkRoleCRD();

@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http))
                 .authorizeRequests(auth -> auth
                         .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .antMatchers("/auth/**").permitAll()
+                        .antMatchers("/auth/**", "/upload").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

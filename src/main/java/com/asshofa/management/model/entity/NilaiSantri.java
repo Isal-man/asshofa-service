@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class NilaiSantri {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "smallserial")
     private Short id;
 

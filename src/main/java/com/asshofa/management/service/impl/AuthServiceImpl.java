@@ -43,10 +43,7 @@ public class AuthServiceImpl implements AuthService {
             user.setPassword(PasswordUtil.encode(register.getPassword()));
             user.setRole("USER");
             user.setCreatedAt(new Timestamp(System.currentTimeMillis()).toLocalDateTime());
-
-            if (register.getGambar() == null) {
-                register.setGambar(Constant.DEFAULT_IMAGE);
-            }
+            user.setGambar(register.getGambar() != null ? register.getGambar() : Constant.DEFAULT_IMAGE);
 
             return new DataResponse<>(Constant.VAR_SUCCESS, ResponseMessage.DATA_CREATED, usersRepository.save(user), loggingHolder);
         } catch (Exception e) {
